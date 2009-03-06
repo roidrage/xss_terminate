@@ -37,4 +37,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.text :data
     t.timestamps
   end
+  
+  create_table :products, :force => true do |t|
+    t.string :description
+  end
 end

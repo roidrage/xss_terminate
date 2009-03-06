@@ -69,4 +69,10 @@ class XssTerminateTest < Test::Unit::TestCase
     assert !c.save
     assert_not_nil c.errors.on(:title)
   end
+  
+  def test_allow_tag_definitions_for_sanitize
+    p = Product.new(:description => "<a href=\"http://example.com/123-product\" rel=\"no-follow\">Link</a><strong>Strong!</strong>")
+    assert p.save
+    assert_equal "<a href=\"http://example.com/123-product\">Link</a>Strong!", p.description
+  end
 end
