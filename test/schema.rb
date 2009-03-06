@@ -41,4 +41,8 @@ ActiveRecord::Schema.define(:version => 0) do
   create_table :products, :force => true do |t|
     t.string :description
   end
+  
+  create_table :product_shippings, :force => true do |t|
+    t.string :shipping_info
+  end
 end

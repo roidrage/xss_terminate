@@ -7,18 +7,26 @@ module XssTerminate
 
   module ClassMethods
     def xss_terminate(options = {})
-      before_validation :sanitize_fields
+      if options.equal?(:none)
+        write_inheritable_attribute(:xss_terminate_options, nil)
+      else
+        before_validation :sanitize_fields
 
-      write_inheritable_attribute(:xss_terminate_options, {
-        :except => (options[:except] || []),
-        :html5lib_sanitize => (options[:html5lib_sanitize] || []),
-        :sanitize => (options[:sanitize] || []),
-        :sanitize_options => {:tags => options[:tags], :attributes => options[:attributes]}
-      })
+        sanitize_options = {}
+        sanitize_options[:tags] = options[:tags] if options[:tags]
+        sanitize_options[:attributes] = options[:attributes] if options[:attributes]
+
+        write_inheritable_attribute(:xss_terminate_options, {
+          :except => (options[:except] || []),
+          :html5lib_sanitize => (options[:html5lib_sanitize] || []),
+          :sanitize => (options[:sanitize] || []),
+          :sanitize_options => sanitize_options
+        })
       
-      class_inheritable_reader :xss_terminate_options
+        class_inheritable_reader :xss_terminate_options
       
-      include XssTerminate::InstanceMethods
+        include XssTerminate::InstanceMethods
+      end
     end
   end
   

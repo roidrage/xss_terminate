@@ -75,4 +75,10 @@ class XssTerminateTest < Test::Unit::TestCase
     assert p.save
     assert_equal "<a href=\"http://example.com/123-product\">Link</a>Strong!", p.description
   end
+  
+  def test_none_should_not_sanitize
+    p = ProductShipping.new(:shipping_info => "<strong>5 EUR national</strong> <a href=\"http://example.com\">Link</a>")
+    assert p.save
+    assert_equal "<strong>5 EUR national</strong> <a href=\"http://example.com\">Link</a>", p.shipping_info
+  end
 end
